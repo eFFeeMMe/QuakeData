@@ -11,22 +11,15 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import json
+
+
+# TODO check if ok in production
+DEBUG = True
+ALLOWED_HOSTS = []
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'u$7=8hw3ieowp=u!nf&vn$=n+&!dx#sm6gqblw@i*p7ft3@_j@'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -78,9 +71,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ingvdb',
-        'HOST': 'localhost',
         'USER': 'ingvuser',
         'PASSWORD': 'ingvpassword',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -119,6 +113,18 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
+# With a little help from Heroku docs
+# (BUT IS THIS REDUNDANT? I DO USE DJANGO-HEROKU AFTER ALL)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+# Configure Django App for Heroku.
+import django_heroku
+django_heroku.settings(locals())
