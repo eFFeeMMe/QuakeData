@@ -121,7 +121,11 @@ USE_TZ = True
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATIC_URL = "/static/"
 STATICFILES_DIRS = [
-  os.path.join(BASE_DIR, 'vuestuff/ingvspa/dist/static'),
+  os.path.join(BASE_DIR, 'vuestuff/ingvspa/dist'),
 ]
 
 django_heroku.settings(locals())
+
+# Does this also:
+# config['STATIC_ROOT'] = os.path.join(config['BASE_DIR'], 'staticfiles')
+# config['STATIC_URL'] = '/static/'
