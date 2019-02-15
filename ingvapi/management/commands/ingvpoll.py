@@ -112,4 +112,4 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         quakes = poll_quakes()
         if quakes:
-            store_quakes()
+            store_quakes(quakes)
