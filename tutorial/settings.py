@@ -26,6 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 INSTALLED_APPS = [
     'ingvapi.apps.IngvapiConfig',
     'polls.apps.PollsConfig',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -35,6 +36,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -121,11 +123,20 @@ USE_TZ = True
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATIC_URL = "/static/"
 STATICFILES_DIRS = [
-  os.path.join(BASE_DIR, 'vuestuff/ingvspa/dist'),
+  os.path.join(BASE_DIR, 'vuestuff/ingvspa/dist/static'),
 ]
 
 django_heroku.settings(locals())
 
-# Does this also:
+# django_heroku.settings() does, amongst other things:
 # config['STATIC_ROOT'] = os.path.join(config['BASE_DIR'], 'staticfiles')
 # config['STATIC_URL'] = '/static/'
+
+CORS_ORIGIN_ALLOW_ALL = False
+
+CORS_ORIGIN_WHITELIST = (
+    'localhost:8080',
+    'localhost:8081',
+    '127.0.0.1:8080'
+    '127.0.0.1:8081'
+)

@@ -13,3 +13,13 @@ class Quake(models.Model):
                str(self.lon) + ' ' + \
                str(self.mag) + ' ' + \
                str(self.depth)
+    
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'dt': self.dt,
+            'lat': self.lat,
+            'lon': self.lon,
+            'mag': self.mag,
+            'depth': self.depth
+        }
