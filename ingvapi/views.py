@@ -17,5 +17,5 @@ def quake_get_many(request, t0, t1):
     quakes = Quake.objects\
         .filter(dt__gte=dt0)\
         .filter(dt__lte=dt1)\
-        .order_by('dt')[:10]
+        .order_by('-dt')[:10]
     return JsonResponse([quake.to_dict() for quake in quakes], safe=False)

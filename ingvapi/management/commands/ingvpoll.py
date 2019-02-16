@@ -4,6 +4,8 @@ import xml.etree.ElementTree as ET
 
 import pytz
 import requests
+from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderUnavailable
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from django.db import models
@@ -31,6 +33,10 @@ per aiutarmi a comprendere lo schema XML:
 
 
 BASE_URL = 'http://webservices.ingv.it/fdsnws/event/1/query'
+LOCATION_DEFAULT = 'Location Unavailable'
+
+
+geolocator = Nominatim(user_agent='djangoingv')
 
 def poll_quakes(t0=None, t1=None):
     if not t0:
@@ -50,18 +56,14 @@ def poll_quakes(t0=None, t1=None):
         now = now.astimezone(pytz.utc)
         t1 = now.isoformat()
     
-    # Remove tz info
-    # print('mit tzinfo: ', t0, t1)
+    # We can now remove tz info since we converted to UTC
     t0 = t0.split('+')[0]
     t1 = t1.split('+')[0]
-    # print('ohne tzinfo: ', t0, t1)
 
     response = requests.get(
         url=BASE_URL,
         params={'starttime': t0, 'endtime': t1}
     )
-    
-    #print(response.text)
     
     try:
         quakes_etree = ET.fromstring(response.text)
@@ -84,16 +86,26 @@ def store_quakes(quakes_etree):
         try:
             mag_val = magnitude[3][0].text
         except IndexError:
-            continue # neanche cnt.rm.ingv.it mostra quest'evento
+            continue # not even cnt.rm.ingv.it shows this event
         
         if float(mag_val) < 2.:
-            continue # per non otturare il free tier Heroku
+            continue # so as to not waste the Heroku free tier
 
+        # Normalize datetime for storage
         dt = dateutil.parser.parse(time_val)
         dt = dt.replace(tzinfo=pytz.utc)
 
-        print('New Quake')
-        print(dt, latitude_val, longitude_val, depth_val, mag_val)
+        # Find out location info
+        location = LOCATION_DEFAULT
+        lat_lon_string = '{}, {}'.format(latitude_val, longitude_val)
+        try:
+            l = geolocator.reverse(lat_lon_string)
+            if 'error' in l.raw:
+                print(l.raw)
+            else:
+                location = l.address
+        except GeocoderUnavailable:
+            print('GeocoderUnavailable')
 
         quake = Quake(
             dt=dt,
@@ -101,7 +113,11 @@ def store_quakes(quakes_etree):
             lon=longitude_val,
             mag=mag_val,
             depth=depth_val,
+            location=location,
         )
+        print(quake)
+
+        print('New Quake {}'.format(quake))
 
         quake.save()
 

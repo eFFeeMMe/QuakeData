@@ -52,7 +52,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'vuestuff/ingvspa/dist')
+            os.path.join(BASE_DIR, 'ingvspa/dist')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -123,7 +123,7 @@ USE_TZ = True
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATIC_URL = "/static/"
 STATICFILES_DIRS = [
-  os.path.join(BASE_DIR, 'vuestuff/ingvspa/dist/static'),
+  os.path.join(BASE_DIR, 'ingvspa/dist/static'),
 ]
 
 django_heroku.settings(locals())
