@@ -11,6 +11,9 @@
           </router-link>
         </div>
       </div>
+      <div v-if="events.length === 0">
+        No seismic events found in the given range
+      </div>
     </div>
   </div>
 </template>

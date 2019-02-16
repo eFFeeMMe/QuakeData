@@ -12,6 +12,9 @@
     <div v-else>
       loading quake {{ id }} data
     </div>
+    <div style="margin:auto; padding:2rem">
+      <router-link to="/">🂢 Back to search 🂢</router-link>
+    </div>
   </div>
 </template>
 

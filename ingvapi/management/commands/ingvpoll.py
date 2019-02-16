@@ -47,7 +47,7 @@ def poll_quakes(t0=None, t1=None):
             t0 = latest_quake.dt + datetime.timedelta(seconds=1)
             t0 = t0.isoformat()
         except Quake.DoesNotExist:
-            yesterday = timezone.now() - datetime.timedelta(days=1)
+            yesterday = timezone.now() - datetime.timedelta(days=10)
             yesterday = yesterday.astimezone(pytz.utc)
             t0 = yesterday.isoformat()
 

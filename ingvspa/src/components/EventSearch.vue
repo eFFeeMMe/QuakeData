@@ -59,6 +59,10 @@ button
   border-radius 1000px
   padding .5rem 2rem
   font-size 1.5rem
+  &:hover
+    background-color grey
+  &:active
+    background-color orange
 
 .filter-box
   background-image radial-gradient(
