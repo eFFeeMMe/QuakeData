@@ -19,8 +19,6 @@
 import axios from 'axios'
 import { L } from 'vue2-leaflet';
 import EventEntry from '@/components/EventEntry.vue'
-import constants from '@/constants.js'
-const API_ENDPOINT = constants.API_ENDPOINT
 
 export default {
   name: 'EventDetails',
@@ -45,11 +43,12 @@ export default {
     EventEntry
   },
   mounted () {
-    let req_url = API_ENDPOINT + 'quakes/' + this.id
+    let req_url = process.env.VUE_APP_API_URL + 'quakes/' + this.id
     axios.get(req_url).then(response => {
       this.event = response.data
       this.loaded = true
     })
+    console.log(process.env)
   },
 }
 </script>

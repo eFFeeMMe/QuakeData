@@ -58,12 +58,7 @@ export default {
       }
     }
   },
-  props: {'event': Object},
-  filters: {
-    pretty_date (date) {
-      return moment(date).toString()
-    }
-  }
+  props: {'event': Object}
 }
 </script>
 

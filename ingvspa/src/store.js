@@ -6,10 +6,6 @@ import axios from 'axios'
 import _ from 'underscore'
 import moment from 'moment'
 
-import constants from '@/constants.js'
-
-const API_ENDPOINT = constants.API_ENDPOINT
-
 export default new Vuex.Store({
   state: {
     events: []
@@ -23,7 +19,7 @@ export default new Vuex.Store({
     getEvents (context, {date0, date1}) {
       let dt0 = moment(date0).format()
       let dt1 = moment(date1).add(1, 'days').format()
-      let req_url = API_ENDPOINT + 'quakes/' + dt0 + '/' + dt1
+      let req_url = process.env.VUE_APP_API_URL + 'quakes/' + dt0 + '/' + dt1
       axios.get(req_url).then(response => {
         let parsed_data = _.map(response.data, e => {
           return {
